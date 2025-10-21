@@ -108,37 +108,33 @@ def analyze_apoe_prdm16_correlation(df, output_path="apoe_prdm16_plot.png"):
     # Show the figure
     plt.show()
     
-    
 
-
-def plot_pairwise_scatter(df, genes, output_path="pairwise_plots.png"):
-    # Filter genes of interest
+def plot_pairwise_scatter(df, genes, output_path="pairwise_relationships.png"):
+    # Filter genes of interest and transpose dataset
     gene_data = df.loc[genes]
-
-    # Transpose to have samples in rows and genes as columns
     gene_data_transposed = gene_data.T
 
-    # Filter rows where both APOE and PRDM16 expressions are non-zero
+    # Filter rows where both APOE and PRDM16 are non-zero
     filtered_data = gene_data_transposed[(gene_data_transposed['APOE'] != 0) & (gene_data_transposed['PRDM16'] != 0)]
 
-    # Create pairwise plots
-    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
-
     ### Pairplot for All Data ###
-    sns.pairplot(gene_data_transposed, ax=axes[0])
-    axes[0].set_title("Pairwise Relationships (All Data)")
-
-    ### Pairplot for Filtered Data ###
-    sns.pairplot(filtered_data, ax=axes[1])
-    axes[1].set_title("Pairwise Relationships (Filtered: Both Non-Zero)")
-
-    # Save the figure
-    plt.savefig(output_path, bbox_inches="tight", dpi=300)
-    print(f"Pairwise plot saved to {output_path}")
-
-    # Show the figure
-    plt.show()
+    pairplot_all = sns.pairplot(gene_data_transposed)
+    pairplot_all.fig.suptitle("Pairwise Relationships (All Data)", y=1.03)  # Add title to the pairplot
     
+    # Export the first pairplot
+    pairplot_all.savefig("pairwise_all_data.png", dpi=300)
+    print("Pairwise plot for ALL data saved as 'pairwise_all_data.png'")
+
+    ### Pairplot for Filtered Non-Zero Data ###
+    pairplot_filtered = sns.pairplot(filtered_data)
+    pairplot_filtered.fig.suptitle("Pairwise Relationships (Filtered Data: Both Non-Zero)", y=1.03)  # Add title to the pairplot
+
+    # Export the second pairplot
+    pairplot_filtered.savefig("pairwise_filtered_data.png", dpi=300)
+    print("Pairwise plot for FILTERED (non-zero) data saved as 'pairwise_filtered_data.png'")
+
+    # Option to show both plots
+    plt.show()
     
     
 

@@ -157,6 +157,9 @@ def main():
     # Specify output file path for export
     OUTPUT_PATH = os.path.join('data', 'filtered_gene_data.csv')
     analyze_expression(df, genes_of_interest)
+    
+    genes_of_interest = ["PRDM16", "APOE", "GFRA2", "SYN1"]
+      # PSD95 missing from dataset
 
     plot_pairwise_scatter(df, genes_of_interest, output_path="pairwise_relationships.png")
     
